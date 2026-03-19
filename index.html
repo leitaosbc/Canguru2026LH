@@ -3,171 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Canguru - Preparatório</title>
+    <title>Portal Canguru</title>
     <style>
-        :root {
-            --bg-color: #e0f7fa; 
-            --text-color: #e65100; 
-            --btn-bg: #ffffff; 
-            --btn-hover: #fbe9e7; 
-            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        body { font-family: sans-serif; background-color: #e0f7fa; color: #e65100; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; border: 2px solid #e65100; }
+        .grid { display: grid; gap: 12px; margin-top: 20px; }
+        button, .btn-link { 
+            padding: 15px; font-size: 1.1rem; border: 2px solid #e65100; border-radius: 10px; 
+            cursor: pointer; font-weight: bold; background: white; color: #e65100; 
+            text-decoration: none; display: block;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
-            border: 2px solid var(--text-color);
-        }
-        h1, h2 { margin-top: 0; color: var(--text-color); }
-        .grid { display: grid; gap: 15px; margin-top: 20px; }
-        button, .btn-link {
-            padding: 18px;
-            font-size: 1.1rem;
-            border: 2px solid var(--text-color);
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            background-color: var(--btn-bg);
-            color: var(--text-color);
-            text-decoration: none;
-            transition: all 0.2s ease-in-out;
-            display: block;
-        }
-        button:hover, .btn-link:hover {
-            background-color: var(--btn-hover);
-            transform: translateY(-2px);
-        }
-        .btn-voltar {
-            background-color: var(--text-color);
-            color: #ffffff !important;
-            margin-top: 25px;
-            border: none;
-        }
-        .btn-voltar:hover { background-color: #bf360c; }
-        .hidden { display: none !important; }
+        button:hover { background: #fbe9e7; }
+        .btn-voltar { background: #e65100; color: white; border: none; margin-top: 20px; width: 100%; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="tela-turmas">
+    <div id="tela1">
         <h1>Selecione sua Turma</h1>
         <div class="grid">
-            <button onclick="abrirTurma('6º Ano')">6º Ano</button>
-            <button onclick="abrirTurma('7º ou 8º Ano')">7º ou 8º Ano</button>
-            <button onclick="abrirTurma('9º Ano')">9º Ano</button>
+            <button onclick="irParaTela2('6º Ano')">6º Ano</button>
+            <button onclick="irParaTela2('7º ou 8º Ano')">7º ou 8º Ano</button>
+            <button onclick="irParaTela2('9º Ano')">9º Ano</button>
         </div>
     </div>
 
-    <div id="tela-menu" class="hidden">
-        <h2 id="titulo-menu"></h2>
+    <div id="tela2" class="hidden">
+        <h2 id="titulo-turma"></h2>
         <div class="grid">
             <a id="link-instrucoes" href="#" target="_blank" class="btn-link">INSTRUÇÕES</a>
-            <button onclick="abrirSubMenu('Lista 1')">LISTA 1</button>
-            <button onclick="abrirSubMenu('Lista 2')">LISTA 2</button>
-            <button class="btn-voltar" onclick="voltarParaTurmas()">← Voltar</button>
+            <button onclick="irParaTela3('Lista 1')">LISTA 1</button>
+            <button onclick="irParaTela3('Lista 2')">LISTA 2</button>
+            <button class="btn-voltar" onclick="voltarPara1()">← Voltar</button>
         </div>
     </div>
 
-    <div id="tela-sub-lista" class="hidden">
-        <h2 id="titulo-sub-lista"></h2>
+    <div id="tela3" class="hidden">
+        <h2 id="titulo-lista"></h2>
         <div class="grid">
             <a id="link-exercicios" href="#" target="_blank" class="btn-link">EXERCÍCIOS</a>
             <a id="link-dicas" href="#" target="_blank" class="btn-link">DICAS</a>
             <a id="link-respostas" href="#" target="_blank" class="btn-link">RESPOSTAS</a>
-            <button class="btn-voltar" onclick="voltarParaMenu()">← Voltar</button>
+            <button class="btn-voltar" onclick="voltarPara2()">← Voltar</button>
         </div>
     </div>
 </div>
 
 <script>
-    const baseDeLinks = {
+    var turmaGlobal = "";
+    
+    var linksPortal = {
         "6º Ano": {
-            instrucoes: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
-            lista1: {
-                exercicios: "https://drive.google.com/file/d/1BSkB1DkUsqQkHkiuuZouWb09emaq03Q_/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/1VguLY-SviTYt9EGdmTyrKNXw0H56re6G/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/19areN06vm2GZeJ3bkO-CTMRTVOK24c7z/view?usp=sharing"
-            },
-            lista2: {
-                exercicios: "https://drive.google.com/file/d/1V4hEmWj8Xo6YYj0Gv-cUZol894oU8l1y/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/15AXGqD5f1WVKqzi3pbOO1ZCtBDgHzc-T/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/1RDpTQTcV9Hd3JzwFEiHp3CodBHkmVOEo/view?usp=sharing"
-            }
+            inst: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
+            l1: { ex: "https://drive.google.com/file/d/1BSkB1DkUsqQkHkiuuZouWb09emaq03Q_/view?usp=sharing", di: "https://drive.google.com/file/d/1VguLY-SviTYt9EGdmTyrKNXw0H56re6G/view?usp=sharing", re: "https://drive.google.com/file/d/19areN06vm2GZeJ3bkO-CTMRTVOK24c7z/view?usp=sharing" },
+            l2: { ex: "https://drive.google.com/file/d/1V4hEmWj8Xo6YYj0Gv-cUZol894oU8l1y/view?usp=sharing", di: "https://drive.google.com/file/d/15AXGqD5f1WVKqzi3pbOO1ZCtBDgHzc-T/view?usp=sharing", re: "https://drive.google.com/file/d/1RDpTQTcV9Hd3JzwFEiHp3CodBHkmVOEo/view?usp=sharing" }
         },
         "7º ou 8º Ano": {
-            instrucoes: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
-            lista1: {
-                exercicios: "https://drive.google.com/file/d/1fholNNgNax-gkuSpP8yWFYJzHszvEq_k/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/1jGaW4t9K-m911IVLnp36O9JTbZQKkku4/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/1x1Be94r2qWcxOCjOs01Eznsk2fr3XIwB/view?usp=sharing"
-            },
-            lista2: {
-                exercicios: "https://drive.google.com/file/d/1C49Mp8bMOH8ChldFztg5UD8VwdXtgQev/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/1MfgHHhFUL_TdqAya4XQaamIKDbGCl8-Z/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/17HFvRp9Ys1xm8df7hqmWWvYz2xLpJsFS/view?usp=sharing"
-            }
+            inst: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
+            l1: { ex: "https://drive.google.com/file/d/1fholNNgNax-gkuSpP8yWFYJzHszvEq_k/view?usp=sharing", di: "https://drive.google.com/file/d/1jGaW4t9K-m911IVLnp36O9JTbZQKkku4/view?usp=sharing", re: "https://drive.google.com/file/d/1x1Be94r2qWcxOCjOs01Eznsk2fr3XIwB/view?usp=sharing" },
+            l2: { ex: "https://drive.google.com/file/d/1C49Mp8bMOH8ChldFztg5UD8VwdXtgQev/view?usp=sharing", di: "https://drive.google.com/file/d/1MfgHHhFUL_TdqAya4XQaamIKDbGCl8-Z/view?usp=sharing", re: "https://drive.google.com/file/d/17HFvRp9Ys1xm8df7hqmWWvYz2xLpJsFS/view?usp=sharing" }
         },
         "9º Ano": {
-            instrucoes: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
-            lista1: {
-                exercicios: "https://drive.google.com/file/d/1geFhveCeR79oP-5fn84hYBoo6XbFpURL/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/1HHRkQVJLwxyx7ZIddXWDe4hp4SpqQ1S-/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/1PA5QqajQQyK4c1_w3VuKA4xRmZ57tHg7/view?usp=sharing"
-            },
-            lista2: {
-                exercicios: "https://drive.google.com/file/d/1ThElF5aJK8B4Ct6h_WlDejsfRygPxCPT/view?usp=sharing",
-                dicas: "https://drive.google.com/file/d/14JkXPVPYAE7kkbeN0GJLjaADRYlnapAI/view?usp=sharing",
-                respostas: "https://drive.google.com/file/d/1V61DvseCuE3_q4rYl5NlYFOjjmBo8CJ9/view?usp=sharing"
-            }
+            inst: "https://drive.google.com/file/d/1whfBpH46WQ-4UWL4SR6EcT7MMZCkO6o1/view?usp=sharing",
+            l1: { ex: "https://drive.google.com/file/d/1geFhveCeR79oP-5fn84hYBoo6XbFpURL/view?usp=sharing", di: "https://drive.google.com/file/d/1HHRkQVJLwxyx7ZIddXWDe4hp4SpqQ1S-/view?usp=sharing", re: "https://drive.google.com/file/d/1PA5QqajQQyK4c1_w3VuKA4xRmZ57tHg7/view?usp=sharing" },
+            l2: { ex: "https://drive.google.com/file/d/1ThElF5aJK8B4Ct6h_WlDejsfRygPxCPT/view?usp=sharing", di: "https://drive.google.com/file/d/14JkXPVPYAE7kkbeN0GJLjaADRYlnapAI/view?usp=sharing", re: "https://drive.google.com/file/d/1V61DvseCuE3_q4rYl5NlYFOjjmBo8CJ9/view?usp=sharing" }
         }
     };
 
-    let turmaSelecionada = "";
-
-    function abrirTurma(turma) {
-        turmaSelecionada = turma;
-        document.getElementById('tela-turmas').classList.add('hidden');
-        document.getElementById('tela-menu').classList.remove('hidden');
-        document.getElementById('titulo-menu').innerText = turma;
-        document.getElementById('link-instrucoes').href = baseDeLinks[turma].instrucoes;
+    function irParaTela2(turma) {
+        turmaGlobal = turma;
+        document.getElementById('tela1').style.display = 'none';
+        document.getElementById('tela2').style.display = 'block';
+        document.getElementById('titulo-turma').innerText = turma;
+        document.getElementById('link-instrucoes').href = linksPortal[turma].inst;
     }
 
-    function abrirSubMenu(nomeLista) {
-        document.getElementById('tela-menu').classList.add('hidden');
-        document.getElementById('tela-sub-lista').classList.remove('hidden');
-        document.getElementById('titulo-sub-lista').innerText = turmaSelecionada + " - " + nomeLista;
-        const chaveLista = nomeLista.replace(" ", "").toLowerCase();
-        const dadosLista = baseDeLinks[turmaSelecionada][chaveLista];
-        document.getElementById('link-exercicios').href = dadosLista.exercicios;
-        document.getElementById('link-dicas').href = dadosLista.dicas;
-        document.getElementById('link-respostas').href = dadosLista.respostas;
+    function irParaTela3(lista) {
+        document.getElementById('tela2').style.display = 'none';
+        document.getElementById('tela3').style.display = 'block';
+        document.getElementById('titulo-lista').innerText = turmaGlobal + " - " + lista;
+        
+        var chave = (lista === 'Lista 1') ? 'l1' : 'l2';
+        document.getElementById('link-exercicios').href = linksPortal[turmaGlobal][chave].ex;
+        document.getElementById('link-dicas').href = linksPortal[turmaGlobal][chave].di;
+        document.getElementById('link-respostas').href = linksPortal[turmaGlobal][chave].re;
     }
 
-    function voltarParaTurmas() {
-        document.getElementById('tela-menu').classList.add('hidden');
-        document.getElementById('tela-turmas').classList.remove('hidden');
+    function voltarPara1() {
+        document.getElementById('tela2').style.display = 'none';
+        document.getElementById('tela1').style.display = 'block';
     }
 
-    function voltarParaMenu() {
-        document.getElementById('tela-sub-lista').classList.add('hidden');
-        document.getElementById('tela-menu').classList.remove('hidden');
+    function voltarPara2() {
+        document.getElementById('tela3').style.display = 'none';
+        document.getElementById('tela2').style.display = 'block';
     }
 </script>
+
 </body>
 </html>
