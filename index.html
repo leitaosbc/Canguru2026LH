@@ -12,7 +12,6 @@
             --btn-hover: #fbe9e7; 
             --shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--bg-color);
@@ -24,7 +23,6 @@
             margin: 0;
             padding: 20px;
         }
-
         .container {
             background: #ffffff;
             padding: 40px;
@@ -35,11 +33,8 @@
             text-align: center;
             border: 2px solid var(--text-color);
         }
-
         h1, h2 { margin-top: 0; color: var(--text-color); }
-
         .grid { display: grid; gap: 15px; margin-top: 20px; }
-
         button, .btn-link {
             padding: 18px;
             font-size: 1.1rem;
@@ -53,19 +48,16 @@
             transition: all 0.2s ease-in-out;
             display: block;
         }
-
         button:hover, .btn-link:hover {
             background-color: var(--btn-hover);
             transform: translateY(-2px);
         }
-
         .btn-voltar {
             background-color: var(--text-color);
-            color: #ffffff;
+            color: #ffffff !important;
             margin-top: 25px;
             border: none;
         }
-
         .btn-voltar:hover { background-color: #bf360c; }
         .hidden { display: none !important; }
     </style>
@@ -136,4 +128,46 @@
             lista1: {
                 exercicios: "https://drive.google.com/file/d/1geFhveCeR79oP-5fn84hYBoo6XbFpURL/view?usp=sharing",
                 dicas: "https://drive.google.com/file/d/1HHRkQVJLwxyx7ZIddXWDe4hp4SpqQ1S-/view?usp=sharing",
-                respostas: "
+                respostas: "https://drive.google.com/file/d/1PA5QqajQQyK4c1_w3VuKA4xRmZ57tHg7/view?usp=sharing"
+            },
+            lista2: {
+                exercicios: "https://drive.google.com/file/d/1ThElF5aJK8B4Ct6h_WlDejsfRygPxCPT/view?usp=sharing",
+                dicas: "https://drive.google.com/file/d/14JkXPVPYAE7kkbeN0GJLjaADRYlnapAI/view?usp=sharing",
+                respostas: "https://drive.google.com/file/d/1V61DvseCuE3_q4rYl5NlYFOjjmBo8CJ9/view?usp=sharing"
+            }
+        }
+    };
+
+    let turmaSelecionada = "";
+
+    function abrirTurma(turma) {
+        turmaSelecionada = turma;
+        document.getElementById('tela-turmas').classList.add('hidden');
+        document.getElementById('tela-menu').classList.remove('hidden');
+        document.getElementById('titulo-menu').innerText = turma;
+        document.getElementById('link-instrucoes').href = baseDeLinks[turma].instrucoes;
+    }
+
+    function abrirSubMenu(nomeLista) {
+        document.getElementById('tela-menu').classList.add('hidden');
+        document.getElementById('tela-sub-lista').classList.remove('hidden');
+        document.getElementById('titulo-sub-lista').innerText = turmaSelecionada + " - " + nomeLista;
+        const chaveLista = nomeLista.replace(" ", "").toLowerCase();
+        const dadosLista = baseDeLinks[turmaSelecionada][chaveLista];
+        document.getElementById('link-exercicios').href = dadosLista.exercicios;
+        document.getElementById('link-dicas').href = dadosLista.dicas;
+        document.getElementById('link-respostas').href = dadosLista.respostas;
+    }
+
+    function voltarParaTurmas() {
+        document.getElementById('tela-menu').classList.add('hidden');
+        document.getElementById('tela-turmas').classList.remove('hidden');
+    }
+
+    function voltarParaMenu() {
+        document.getElementById('tela-sub-lista').classList.add('hidden');
+        document.getElementById('tela-menu').classList.remove('hidden');
+    }
+</script>
+</body>
+</html>
